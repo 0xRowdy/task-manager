@@ -3,8 +3,8 @@ import { useState } from 'react';
 
 import { Box, Button, Flex, Image, Link, Text } from '@chakra-ui/react';
 
+import Nav from './components/organisms/Nav';
 import ThemeToggleButton from './components/ThemeToggleButton';
-import logo from './logo.svg';
 
 const textFontSizes = [16, 18, 24, 30];
 
@@ -13,6 +13,7 @@ function App(): JSX.Element {
 
   return (
     <Box>
+      <Nav />
       <Flex
         as="header"
         direction="column"
@@ -21,16 +22,6 @@ function App(): JSX.Element {
         h="100vh"
         fontSize="3xl"
       >
-        <motion.div
-          animate={{ rotateZ: 360 }}
-          transition={{
-            repeat: Infinity,
-            duration: 20,
-            ease: 'linear',
-          }}
-        >
-          <Image src={logo} alt="" h="40vmin" />
-        </motion.div>
         <Text fontSize={textFontSizes}>
           Hello Vite + React + Typescript + Chakra UI!
         </Text>

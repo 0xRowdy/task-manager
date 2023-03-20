@@ -72,6 +72,7 @@
         ]
       }
     ],
+    "import/no-extraneous-dependencies": ["error", {"includeInternal": true, "includeTypes": true}],
     "import/no-anonymous-default-export": [
       "error",
       {
