@@ -23,6 +23,7 @@ function NewTask() {
     },
   });
 
+  // TODO Write contract
   const onSubmit = (data) => console.log('form data', data);
 
   return (

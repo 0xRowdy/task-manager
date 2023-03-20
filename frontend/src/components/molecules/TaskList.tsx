@@ -2,19 +2,14 @@ import { BigNumber, ethers } from 'ethers';
 import { useState } from 'react';
 import { useContractRead } from 'wagmi';
 
-import { Divider, Spinner } from '@chakra-ui/react';
+import { Divider, Heading, Spinner } from '@chakra-ui/react';
 
-import taskManager from '../../abis/taskManager.json';
+import taskManagerAbi from '../../abis/taskManager.json';
 
 import Task, { TaskProps } from './Task';
 
 type TaskData = {
   [key: string]: TaskProps;
-};
-
-const taskManageContract = {
-  address: import.meta.env.VITE_TASK_MANAGER_CONTRACT_ADDRESS,
-  abi: taskManager,
 };
 
 function TaskList() {
@@ -23,7 +18,7 @@ function TaskList() {
   // TODO Move to context for application wide use
   const { isError, isLoading } = useContractRead({
     address: import.meta.env.VITE_TASK_MANAGER_CONTRACT_ADDRESS,
-    abi: taskManager,
+    abi: taskManagerAbi,
     functionName: 'taskCount',
     structuralSharing: (prev, next) => (prev === next ? prev : next),
     onSuccess(result: BigNumber) {
@@ -33,7 +28,7 @@ function TaskList() {
 
   useContractRead({
     address: import.meta.env.VITE_TASK_MANAGER_CONTRACT_ADDRESS,
-    abi: taskManager,
+    abi: taskManagerAbi,
     functionName: 'getTasksInRange',
     enabled: taskCount !== null,
     args: [1, taskCount],
@@ -48,6 +43,7 @@ function TaskList() {
 
   return (
     <div>
+      {!tasks && <Heading>No Tasks</Heading>}
       {isLoading && <Spinner size="lg" />}
       {/* TODO Better Error handling */}
       {isError && <p>Something went wrong</p>}
@@ -61,7 +57,6 @@ function TaskList() {
             complete={task.complete}
           />
         ))}
-      <Divider />
     </div>
   );
 }

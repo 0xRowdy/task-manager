@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Container,
+  Divider,
   Flex,
   Heading,
   Modal,
@@ -40,7 +41,9 @@ function App(): JSX.Element {
               Connected to {activeConnector?.name}
             </Heading>
             <Box border="1px" borderRadius="10" padding="10" width="full">
-              <Button onClick={onOpen}>New Task</Button>
+              <Flex>
+                <Button onClick={onOpen}>New Task</Button>
+              </Flex>
               <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
@@ -64,6 +67,7 @@ function App(): JSX.Element {
                   </ModalFooter>
                 </ModalContent>
               </Modal>
+              <Divider marginY="5" />
               <TaskList />
             </Box>
           </Container>
