@@ -1,68 +1,74 @@
-import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useAccount } from 'wagmi';
 
-import { Box, Button, Flex, Image, Link, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  Heading,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
+} from '@chakra-ui/react';
 
+import NewTask from './components/organisms/forms/NewTask';
 import Nav from './components/organisms/Nav';
-import ThemeToggleButton from './components/ThemeToggleButton';
-
-const textFontSizes = [16, 18, 24, 30];
 
 function App(): JSX.Element {
-  const [count, setCount] = useState(0);
-
+  const { connector: activeConnector, isConnected } = useAccount();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Box>
       <Nav />
       <Flex
-        as="header"
+        as="main"
+        paddingTop={10}
         direction="column"
         alignItems="center"
-        justifyContent="center"
         h="100vh"
-        fontSize="3xl"
       >
-        <Text fontSize={textFontSizes}>
-          Hello Vite + React + Typescript + Chakra UI!
-        </Text>
-        <Button
-          colorScheme="blue"
-          fontSize={textFontSizes}
-          onClick={() => setCount((c) => c + 1)}
-          marginTop="2"
-        >
-          count is: {count}
-        </Button>
-        <Text fontSize={textFontSizes}>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </Text>
-        <Text fontSize={textFontSizes}>
-          <Link href="https://reactjs.org" isExternal color="#61dafb">
-            Learn React
-          </Link>
-          {' | '}
-          <Link
-            href="https://vitejs.dev/guide/features.html"
-            isExternal
-            color="#61dafb"
-          >
-            Vite Docs
-          </Link>
-          {' | '}
-          <Link
-            href="https://www.typescriptlang.org/"
-            isExternal
-            color="#61dafb"
-          >
-            Typescript
-          </Link>
-          {' | '}
-          <Link href="https://chakra-ui.com" isExternal color="#61dafb">
-            Chakra UI
-          </Link>
-        </Text>
+        {!isConnected && <Heading>Connect your wallet to get started</Heading>}
+        {isConnected && (
+          <Container centerContent>
+            <Heading marginBottom={10} alignSelf="center">
+              Connected to {activeConnector?.name}
+            </Heading>
+            <Box border="1px" borderRadius="10" padding="10" width="full">
+              <Button alignSelf="end" onClick={onOpen}>
+                New Task
+              </Button>
+              <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader>New Task</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody>
+                    <NewTask />
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button
+                      mr={3}
+                      colorScheme="blue"
+                      variant="outline"
+                      onClick={onClose}
+                    >
+                      Cancel
+                    </Button>
+                    <Button colorScheme="blue" type="submit">
+                      Submit
+                    </Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
+            </Box>
+          </Container>
+        )}
       </Flex>
-      <ThemeToggleButton pos="fixed" bottom="2" right="2" />
     </Box>
   );
 }

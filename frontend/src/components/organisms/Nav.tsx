@@ -18,7 +18,7 @@ export default function Nav() {
     <Box bg={useColorModeValue('gray.200', 'gray.700')} px={4}>
       <Flex h={16} alignItems="center" justifyContent="space-between">
         <Box>
-          <Image src={logo} alt="" h="10vmin" />
+          <Image src={logo} alt="" h="10" />
         </Box>
         <Flex alignItems="center">
           <Stack direction="row" spacing={7}>
