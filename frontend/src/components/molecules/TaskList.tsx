@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import { BigNumber, ethers } from 'ethers';
+import { useState } from 'react';
 import { useContractRead } from 'wagmi';
 
 import { Divider, Spinner } from '@chakra-ui/react';
@@ -10,10 +10,6 @@ import Task, { TaskProps } from './Task';
 
 type TaskData = {
   [key: string]: TaskProps;
-};
-
-export type QueryVariables = {
-  [field: string]: string;
 };
 
 const taskManageContract = {
