@@ -16,6 +16,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
+import TaskList from './components/molecules/TaskList';
 import NewTask from './components/organisms/forms/NewTask';
 import Nav from './components/organisms/Nav';
 
@@ -39,9 +40,7 @@ function App(): JSX.Element {
               Connected to {activeConnector?.name}
             </Heading>
             <Box border="1px" borderRadius="10" padding="10" width="full">
-              <Button alignSelf="end" onClick={onOpen}>
-                New Task
-              </Button>
+              <Button onClick={onOpen}>New Task</Button>
               <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
@@ -65,6 +64,7 @@ function App(): JSX.Element {
                   </ModalFooter>
                 </ModalContent>
               </Modal>
+              <TaskList />
             </Box>
           </Container>
         )}
