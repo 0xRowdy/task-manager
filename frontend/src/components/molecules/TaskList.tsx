@@ -9,12 +9,16 @@ import taskManagerAbi from '../../abis/taskManager.json';
 import Task, { TaskProps } from './Task';
 
 type TaskData = {
-  [key: string]: TaskProps;
+  id?: number;
+  dueDate: number;
+  description: string;
+  name: string;
+  complete: boolean;
 };
 
 function TaskList() {
   const [taskCount, setTaskCount] = useState<number | null>(null);
-  const [tasks, setTasks] = useState<TaskData | null>(null);
+  const [tasks, setTasks] = useState<TaskData[] | null>(null);
   // TODO Move to context for application wide use
   const { isError, isLoading } = useContractRead({
     address: import.meta.env.VITE_TASK_MANAGER_CONTRACT_ADDRESS,
@@ -32,12 +36,15 @@ function TaskList() {
     functionName: 'getTasksInRange',
     enabled: taskCount !== null,
     args: [1, taskCount],
-    onSuccess(taskList: TaskData) {
+    onSuccess(taskList: TaskData[]) {
       if (!taskList) {
         return;
       }
-      setTasks(taskList);
-      // TODO Sort tasks by due date
+      const newTaskList = taskList.map(
+        (task, index: number) => ({ ...task, id: index + 1 } as TaskProps)
+      );
+      newTaskList.sort((a, b) => a.dueDate - b.dueDate);
+      setTasks(newTaskList);
     },
   });
 
@@ -48,15 +55,19 @@ function TaskList() {
       {/* TODO Better Error handling */}
       {isError && <p>Something went wrong</p>}
       {tasks &&
-        Object.values(tasks).map((task, index) => (
-          <Task
-            key={`${task.name}-${index}`}
-            name={task.name}
-            description={task.description}
-            dueDate={task.dueDate}
-            complete={task.complete}
-          />
-        ))}
+        tasks.map(
+          (task, index) =>
+            !task.complete && (
+              <Task
+                key={`${task.id}`}
+                id={task.id ? task.id : index}
+                name={task.name}
+                description={task.description}
+                dueDate={task.dueDate}
+                complete={task.complete}
+              />
+            )
+        )}
     </div>
   );
 }
