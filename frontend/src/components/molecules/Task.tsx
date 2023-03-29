@@ -15,9 +15,10 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-import taskManagerAbi from '../../abis/taskManager.json';
+// import taskManagerAbi from '../../abis/taskManager.json';
 
 export type TaskProps = {
+  id: number;
   dueDate: string;
   description: string;
   name: string;
@@ -27,12 +28,12 @@ export type TaskProps = {
 // TODO Add complete button call to contract
 
 function Task({ name, description, dueDate, complete }: TaskProps) {
-  const { config } = usePrepareContractWrite({
-    address: import.meta.env.VITE_TASK_MANAGER_CONTRACT_ADDRESS,
-    abi: taskManagerAbi,
-    functionName: 'completeTask',
-  });
-  const { data, isLoading, isSuccess, write } = useContractWrite(config);
+  // const { config } = usePrepareContractWrite({
+  //   address: import.meta.env.VITE_TASK_MANAGER_CONTRACT_ADDRESS,
+  //   abi: taskManagerAbi,
+  //   functionName: 'completeTask',
+  // });
+  // const { data, isLoading, isSuccess, write } = useContractWrite(config);
 
   return (
     <Card variant="elevated" padding={5} marginY={5}>
